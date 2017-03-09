@@ -20,16 +20,36 @@ class MyEventSubscriber
 
         $product = $order->getProduct();
 
-//        $product->setFileName('mioFile.zip');
+
+        $file = $product->getFile();
+
+        $product->setFile($file->getPathname());
+        $product->setFilename($file->getClientOriginalName());
+        $product->setMimeType($file->getClientMimeType());
 
         $this->dm->persist($product);
         $this->dm->flush();
 
-        $productReflProp = $em->getClassMetadata('AppBundle:Order')
-            ->reflClass->getProperty('product');
-        $productReflProp->setAccessible(true);
-        $productReflProp->setValue(
-            $order, $this->dm->getReference('AppBundle:Product', 2)
-        );
+        $order->setProductId($product->getId());
+
+//        $productReflProp = $em->getClassMetadata('AppBundle:Order')
+//            ->reflClass->getProperty('productId');
+//        $productReflProp->setAccessible(true);
+//        $productReflProp->setValue(
+//            $order, $this->dm->getReference('AppBundle:Product', $product->getId())
+//        );
+    }
+
+
+    public function postLoad(LifecycleEventArgs $eventArgs)
+    {
+//        $order = $eventArgs->getEntity();
+//        $em = $eventArgs->getEntityManager();
+//        $productReflProp = $em->getClassMetadata('AppBundle:Order')
+//            ->reflClass->getProperty('product');
+//        $productReflProp->setAccessible(true);
+//        $productReflProp->setValue(
+//            $order, $this->dm->getReference('AppBundle:Product', $order->getProductId())
+//        );
     }
 }

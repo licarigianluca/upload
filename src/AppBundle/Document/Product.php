@@ -36,6 +36,17 @@ class Product
     /** @MongoDB\String */
     private $md5;
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+
+
     public function getFile()
     {
         return $this->file;

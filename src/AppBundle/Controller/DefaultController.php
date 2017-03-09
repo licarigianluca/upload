@@ -86,23 +86,12 @@ class DefaultController extends Controller
     public function listAction(Request $request, $id)
     {
 
-        $entity = $this->get('doctrine_mongodb')->getRepository('AppBundle:Product')->findAll();
+        $entity = $this->getDoctrine()->getEntityManager()->getRepository('AppBundle:Order')->find($id);
 
-//        $entities = $dm->getRepository('Upload')->findAll();
+        $file = $this->get('doctrine.odm.mongodb.document_manager')->getRepository('AppBundle:Product')->find($entity->getProductId());
 
-//        $profile = $dm->createQueryBuilder('Upload')->all()
-//            ->field('name')->equals('Jonathan H. Wage')
-//            ->getQuery()
-//            ->getSingleResult();
-
-//        $image = $profile->getImage();
-
-
-
-
-
-
-        return new Response($entity->getFile()->getBytes(),200);
+//        return new Response($entity->getProduct()->getFile()->getBytes(), 200, array('content-type' => $entity->getProduct()->getMimeType()));
+        return new Response($file->getFile()->getBytes(), 200, array('content-type' => $file->getMimeType()));
 
 
     }
